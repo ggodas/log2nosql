@@ -1,17 +1,16 @@
 var dgram = require("dgram");
-var xml2js = require('xml2js');
-var mongoClient = require('mongodb').MongoClient;
-var format = require('util').format;
 var xmlParser = require('./xmlParser');
-
-var parser = new xml2js.Parser();
+var modelPersistense = require('./mongoDbPersistense');
 
 var server = dgram.createSocket("udp4");
+
 server.on("message", function (msg, rinfo) {
-	//console.warn(msg);
-	  var logMessageModel = xmlParser.parseFromlog4jXml(msg);
+	
+	var mensagem = msg.toString('utf8', 0, msg.length);
+	console.warn(mensagem);
+	  var logMessageModel = xmlParser.parseFromlog4jXml(mensagem);
 	  console.warn(logMessageModel);
-	  insertToDatabase(logMessageModel);
+	  modelPersistense.save(logMessageModel);
 	  
 });
 
@@ -22,21 +21,3 @@ server.on("listening", function () {
 
 
 server.bind(43278);
-
-
-function insertToDatabase(data){
-
-  var mongodb = require('mongodb');
-    var server = new mongodb.Server("monaco", 27017, {});
-    new mongodb.Db('ApplicationLog', server, {w: 1}).open(function (error, client) {
-      if (error) throw error;
-      var collection = new mongodb.Collection(client, 'Logs');
-      collection.insert(data, {safe:true},
-        function(err, objects) {
-			if (err) console.warn(err.message);
-			if (err && err.message.indexOf('E11000 ') !== -1) {
-			  // this _id was already inserted in the database
-        }
-      });
-    });
-}
