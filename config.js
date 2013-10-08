@@ -5,7 +5,7 @@
 var config = {};
 
 config.mongodb = {};
-config.mongodb.server = 'monaco'; //mongoserver
+config.mongodb.server = '127.0.0.1'; //mongoserver
 config.mongodb.port = 27017; //mongoserverport
 config.mongodb.databaseName = 'ApplicationLog';
 config.mongodb.collectionName = 'Logs';
