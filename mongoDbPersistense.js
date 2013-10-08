@@ -3,13 +3,14 @@
  */
 
 var mongodb = require('mongodb');
+var config = require('./config');
 
 
 exports.save = function(model){
-	    var server = new mongodb.Server("monaco", 27017, {});
-	    new mongodb.Db('ApplicationLog', server, {w: 1}).open(function (error, client) {
+	    var server = new mongodb.Server(config.mongodb.server, config.mongodb.port, {});
+	    new mongodb.Db(config.mongodb.databaseName, server, {w: 1}).open(function (error, client) {
 	      if (error) throw error;
-	      var collection = new mongodb.Collection(client, 'Logs');
+	      var collection = new mongodb.Collection(client, config.mongodb.collectionName);
 	      collection.insert(model, {safe:true},
 	        function(err, objects) {
 				if (err) console.warn(err.message);

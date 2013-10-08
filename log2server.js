@@ -1,6 +1,7 @@
 var dgram = require("dgram");
 var xmlParser = require('./xmlParser');
 var modelPersistense = require('./mongoDbPersistense');
+var config = require('./config');
 
 var server = dgram.createSocket("udp4");
 
@@ -20,4 +21,4 @@ server.on("listening", function () {
 });
 
 
-server.bind(43278);
+server.bind(config.udp.port);
