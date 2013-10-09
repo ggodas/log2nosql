@@ -8,9 +8,9 @@ var server = dgram.createSocket("udp4");
 server.on("message", function (msg, rinfo) {
 	
 	var mensagem = msg.toString('utf8', 0, msg.length);
-	console.warn(mensagem);
+	console.info(mensagem);
 	  var logMessageModel = xmlParser.parseFromlog4jXml(mensagem);
-	  console.warn(logMessageModel);
+	  console.info(logMessageModel);
 	  modelPersistense.save(logMessageModel);
 	  
 });
